@@ -18,26 +18,18 @@ class Node{
 	Node* GetPrev() const;
 	void SetPrev(Node*);
 	static Node* Create(int,int);
-							int GetPox() const;
-							void SetPox(int);
-							int GetPoy() const;
-							void SetPoy(int);
+	int GetPox() const;
+	void SetPox(int);
+	int GetPoy() const;
+	void SetPoy(int);
 };
 
  Node::Node(){
- 	data='O';
- 	next=NULL;
- 	prev=NULL;
- 	pox=6;
- 	poy=10;
+ 	data='O'; next=NULL; prev=NULL; pox=6; poy=10;
  }
  
  Node::Node(int x,int y){
- 	data='o';
- 	next=NULL;
- 	prev=NULL;
- 	pox=x;
- 	poy=y;
+ 	data='o'; next=NULL; prev=NULL; pox=x; poy=y;
  }
  
  int Node::GetData() const{
@@ -56,9 +48,8 @@ class Node{
  	this->next=newnode;		
  }
  
-Node* Node::GetPrev() const{
+ Node* Node::GetPrev() const{
 	return this->prev;
- 	
  }
  
  void Node::SetPrev(Node* newnode){
@@ -67,23 +58,20 @@ Node* Node::GetPrev() const{
  
  Node* Node::Create(int x,int y){
  	Node*temp;
- 	if(x && y){
- 	temp=new Node(x,y);
- 	}
- 	else{
- 	temp=new Node();	
-	 }
+ 	if(x && y)
+		temp=new Node(x,y);
+ 	else
+	 	temp=new Node();
  	return temp;
- 	
  }
  
-int Node::GetPox() const{
+ int Node::GetPox() const{
 	return this->pox;	
-}
+ }
 	
-int Node::GetPoy() const{
+ int Node::GetPoy() const{
 	return this->poy;	
-}
+ }
 	
 void Node::SetPox(int x){
 	this->pox=x;
@@ -313,33 +301,28 @@ int main(){
 	baby.printBOX();
 	char ch,prev='s',move;
 	while(1){
-			//if(kbhit()){
-			//ch = getch();
-			cin>>ch;
-			//}	
-			//napms(400);
-	prev=SnakeMove(ch,prev);
-	head=snake2.SnakeHead(prev);
-	if(snake2.SnakeDies(head)){
-		cout<<"Game Over\n";
-		break;
-	}
-	if(snake2.SnakeBite(xloc,yloc,head)){
-		snake2.SnakeGrow(head->GetPox(),head->GetPoy());
-		Mouse.GenerateFood(&xloc,&yloc);
-		baby.FoodBox(xloc,yloc,'*');
-		system("cls");
-	}
-	else{
-		if(snake2.EatsTail(head)){
-			cout<<"eats\n.";
+		cin>>ch;
+		prev=SnakeMove(ch,prev);
+		head=snake2.SnakeHead(prev);
+		if(snake2.SnakeDies(head)){
+			cout<<"Game Over\n";
+			break;
 		}
-	snake2.Swapper(head->GetPox(),head->GetPoy());
+		if(snake2.SnakeBite(xloc,yloc,head)){
+			snake2.SnakeGrow(head->GetPox(),head->GetPoy());
+			Mouse.GenerateFood(&xloc,&yloc);
+			baby.FoodBox(xloc,yloc,'*');
+			system("cls");
+		}
+		else{
+			if(snake2.EatsTail(head))
+				cout<<"eats\n.";
+			snake2.Swapper(head->GetPox(),head->GetPoy());
+		}
+		baby.UpdateBOX(snake2.GetHead());
+		system("cls");
+		baby.printBOX();
 	}
-	baby.UpdateBOX(snake2.GetHead());
-	system("cls");
-	baby.printBOX();
-}
 }
 	
 int Snake::SnakeBite(int x,int y,Node* head){
@@ -356,34 +339,33 @@ void Snake::SnakeGrow(int cx,int cy){
 		int flag=0,one,two;
 		temp=this->GetHead();
 		while(temp!=NULL){
-		int x=0,y=0;
-		if(!flag){
-		if(temp->GetNext()->GetNext()==NULL){
-			temp1=temp;
-			flag=1;
-		}
-	}
-		if(temp->GetNext()==NULL){	
-			temp->SetData('o');
-		}
-		x=temp->GetPox();  
-		y=temp->GetPoy();
-				temp->SetPox(cx);
-				temp->SetPoy(cy);
-			cx=x;
-			cy=y;
+			int x=0,y=0;
+			if(!flag){
+				if(temp->GetNext()->GetNext()==NULL){
+					temp1=temp;
+					flag=1;
+				}
+			}
+			if(temp->GetNext()==NULL){	
+				temp->SetData('o');
+			}
+			x=temp->GetPox();  
+			y=temp->GetPoy();
+			temp->SetPox(cx);
+			temp->SetPoy(cy);
+			cx=x; cy=y;
 			one=temp->GetPox();
 			two=temp->GetPoy();
 			temp=temp->GetNext();
 		}
 		temp2=Node::Create(one,two);
 		temp=this->GetHead();
-		while(temp->GetNext()!=NULL){
+		while(temp->GetNext()!=NULL)
 			temp=temp->GetNext();
-		}
 		temp->SetNext(temp2);
 		this->SetTail(temp2);
 }
+
 void Food::GenerateFood(int *xloc,int *yloc){
 	*xloc=rand()%(20-1)+1;
 	*yloc=rand()%(20-1)+1;
@@ -391,11 +373,11 @@ void Food::GenerateFood(int *xloc,int *yloc){
 
 int Snake::SnakeDies(Node* head){
 	Node*temp=this->GetHead();
-	if(head->GetPox()==-1 || head->GetPoy()==-1 || head->GetPox()==20 ||head->GetPoy()==20 || head->GetData() == ' '){
+	if(head->GetPox()==-1 || head->GetPoy()==-1 || head->GetPox()==20 ||head->GetPoy()==20 || head->GetData() == ' ')
 		return 1;
-	}
 	return 0; 
 }
+
 int Snake::EatsTail(Node* head){
 	Node*temp = this->GetHead();
 	Node*temp1;
@@ -416,4 +398,3 @@ int Snake::EatsTail(Node* head){
 	}
 	return 0;
 }
-
